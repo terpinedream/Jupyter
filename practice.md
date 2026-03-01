@@ -52,3 +52,64 @@ bios.query("died_date.isnull()")
 # ensure date is dtype datetime64
 bios[bios["born_date"].dt.year > 1950]
 ```
+
+## **Create new col for height in meters**
+
+```
+# assuming pandas ignores NaN values at runtime
+bios["height_m"] = bios["height_cm"] / 100
+```
+
+## **Create bool column for weight status**
+
+```
+bios["has_weight"] = bios["weight_kg"].notna()
+```
+
+## \_\_Create bool column for height
+
+```
+bios["is_tall"] = bios["height_cm"] > 180
+```
+
+## **Sort athletes by height descending (name,height,weight)**
+
+```
+bios.sort_values(by="height_cm", ascending = False)[["name", "height_cm", "weight_kg"]]
+```
+
+## **Find tallest athlete**
+
+```
+bios.sort_values(by="height_cm", ascending = False).head(1)
+# or
+bios.loc[bios["height_cm"].idxmax()]
+```
+
+## **Find top 5 heaviest athletes**
+
+```
+bios.sort_values(by="weight_kg", ascending=False).head()
+# or with nlargest w/ name, height, & weight
+bios.nlargest(5, "weight_kg")[["name", "height_cm", "weight_kg"]]
+```
+
+## **Count athletes by country**
+
+```
+bios.groupby("born_country").size().reset_index(name="athlete_count")
+```
+
+## **Group by NOC & find avg height**
+
+```
+bios.groupby("NOC")["height_cm"].mean()
+```
+
+## **Group by region with most athletes**
+
+```
+bios.groupby("born_region").size().reset_index(name="region_count")
+# or
+bios["born_region"].value_counts().head(1) # top region
+```
