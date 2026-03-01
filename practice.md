@@ -1,6 +1,6 @@
 # Jupyter / Panda with Olympic Data
 
-## **Data Frame**
+## **Data Frame Snippet**
 
 ```
   athlete_id  name  born_date  born_city  born_region  born_country  NOC  height_cm  weight_kg  died_date
