@@ -1,0 +1,18 @@
+1. Find athletes born in cities that appear more than once.
+
+2. Identify rows where born_country and NOC do not match.
+
+3. Drop rows where both height_cm and weight_kg are missing.
+
+4. Create a BMI column:
+   - Only calculate BMI where both height and weight exist.
+   - Use height in meters.
+   - BMI = weight_kg / (height_m ** 2)
+
+5. Count how many athletes were born per decade.
+
+6. Calculate the percentage of athletes missing height data.
+
+7. Among athletes with a died_date:
+   - Calculate lifespan.
+   - Find the athlete with the longest lifespan.

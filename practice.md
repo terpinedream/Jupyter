@@ -113,3 +113,61 @@ bios.groupby("born_region").size().reset_index(name="region_count")
 # or
 bios["born_region"].value_counts().head(1) # top region
 ```
+
+## **Athletes born in cities > 1**
+
+```
+cityCounts = bios["born_city"].value_counts()
+duplicateCities = cityCounts[cityCounts > 1].index
+bios[bios["born_city"].isin(duplicateCities)]
+```
+
+## **% of athletes missing height data**
+
+```
+missingHeight = bios["height_cm"].isna().mean() * 100
+print(f"{missingHeight:.2f}% of athletes missing height data")
+```
+
+## **Drop rows where height & weight are missing**
+
+```
+bios = bios.dropna(subset=["height_cm", "weight_kg"], how="all")
+```
+
+## **Calculate BMI rounded to 2nd decimal place**
+
+```
+bios["BMI"] = bios["weight_kg"] / (bios["height_m"] ** 2)
+bios["BMI"] = bios["BMI"].round(2)
+```
+
+## **Count athletes born per decade**
+
+```
+bios["born_date"] = pd.to_datetime(bios["born_date"], errors="coerce")
+# create col for birth year
+bios["born_year"] = bios["born_date"].dt.year
+# calculate to get even decades EG 1980, 1970, etc.
+bios["born_decade"] = (bios["born_year"] // 10) * 10
+# convert to int64 to remove trailing decimal
+bios["born_year"] = bios["born_year"].astype("Int64")
+bios["born_decade"] = bios["born_decade"].astype("Int64")  # Int64 with capital to preserve NaN values
+```
+
+## **Calculate lifespan for deceased athletes**
+
+```
+# ensure dates are datetime
+bios["born_date"] = pd.to_datetime(bios["born_date"], errors="coerce")
+bios["died_date"] = pd.to_datetime(bios["died_date"], errors="coerce")
+# calculate lifespan in years
+bios["lifespan"] = (bios["died_date"] - bios["born_date"]).dt.days / 365.25
+# round to integer or two decimals
+bios["lifespan"] = bios["lifespan"].round(0).astype("Int64")
+# check + exclude living athletes
+lifespanKnown = bios[bios["lifespan"].notna()]
+lifespanKnown[["name", "born_date", "died_date", "lifespan"]].head(20)
+# athlete with longest lifespan
+lifespanKnown[["name", "lifespan"]].max()
+```
