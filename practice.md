@@ -1,6 +1,6 @@
 # Jupyter / Panda with Olympic Data
 
-## **Data Frame**
+## **Data Frame Snippet**
 
 ```
   athlete_id  name  born_date  born_city  born_region  born_country  NOC  height_cm  weight_kg  died_date
@@ -25,7 +25,7 @@ bios.query("height_cm > 215")
 ## **Return athletes born in France**
 
 ```
-bios[bios["bonr_country"] == "FRA"]
+bios[bios["born_country"] == "FRA"]
 ```
 
 ## **Return athletes who have a recorded height**
@@ -66,7 +66,7 @@ bios["height_m"] = bios["height_cm"] / 100
 bios["has_weight"] = bios["weight_kg"].notna()
 ```
 
-## \_\_Create bool column for height
+## **Create bool column for height**
 
 ```
 bios["is_tall"] = bios["height_cm"] > 180
