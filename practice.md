@@ -202,7 +202,6 @@ bios['bmi_class'] = bios.apply(
         else ('normal' if pd.notna(row['height_cm']) and pd.notna(row['weight_kg']) else None),
     axis=1
 )
-v
 ```
 
 ## **Create country codes from full name**
