@@ -171,3 +171,53 @@ lifespanKnown[["name", "born_date", "died_date", "lifespan"]].head(20)
 # athlete with longest lifespan
 lifespanKnown[["name", "lifespan"]].max()
 ```
+
+## **Find complexity of name**
+
+```
+bios['name_complexity'] = bios['name'].apply(
+  lambda n: None if pd.isna(n)
+  else "short" if len(n) < 12
+  else "medium" if len(n) <= 20
+  else "long"
+)
+```
+
+## **Create age groupings**
+
+```
+bios['age_group'] = bios['born_date'].apply(
+  lambda x: 'old' if pd.notna(x) and int(x[:4]) < 1950
+  else('middle' if pd.notna(x) and 1950 <= int(x[:4]) < 2000
+  else('young' if pd.notna(x) else None)
+  )
+)
+```
+
+## **Create BMI classifications**
+
+```
+bios['bmi_class'] = bios.apply(
+    lambda row: 'overweight' if pd.notna(row['height_cm']) and pd.notna(row['weight_kg']) and row['weight_kg'] / (row['height_cm']/100)**2 >= 25
+        else ('normal' if pd.notna(row['height_cm']) and pd.notna(row['weight_kg']) else None),
+    axis=1
+)
+v
+```
+
+## **Create country codes from full name**
+
+```
+# one word -> first 3 letters
+# two words -> first letter, first 2 of second word
+# three words -> first letter each word
+bios['country_code'] = bios['NOC'].apply(
+    lambda x: (
+        "".join([w[0] for w in x.split()[:2]] + [x.split()[2][0]] if len(x.split()) > 2
+        else [w[0] for w in x.split()[:1]] + [x.split()[1][:2]])
+        .upper() if pd.notna(x) and len(x.split()) > 1
+        else x[:3].upper() if pd.notna(x)
+        else None
+    )
+)
+```
